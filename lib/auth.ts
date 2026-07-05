@@ -2,13 +2,13 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { getEnv } from "@/lib/env";
+import { getAdminEnv } from "@/lib/env";
 
 const COOKIE_NAME = "burak-admin-session";
 const SESSION_TTL_MS = 1000 * 60 * 60 * 12;
 
 function getSigningSecret() {
-  const env = getEnv();
+  const env = getAdminEnv();
   return env.ADMIN_SESSION_SECRET ?? `${env.ADMIN_PASS}:${env.SUPABASE_SERVICE_ROLE_KEY.slice(0, 24)}`;
 }
 
@@ -60,7 +60,7 @@ export function verifyAdminSessionToken(token?: string | null, now = Date.now())
 }
 
 export function isValidAdminPassword(candidate: string) {
-  return candidate === getEnv().ADMIN_PASS;
+  return candidate === getAdminEnv().ADMIN_PASS;
 }
 
 export async function setAdminSessionCookie() {

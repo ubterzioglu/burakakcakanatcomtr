@@ -4,11 +4,8 @@ const cookieStore = new Map<string, string>();
 const redirectMock = vi.fn();
 
 vi.mock("@/lib/env", () => ({
-  getEnv: () => ({
-    NEXT_PUBLIC_SUPABASE_URL: "https://example.supabase.co",
-    NEXT_PUBLIC_SUPABASE_ANON_KEY: "anon",
+  getAdminEnv: () => ({
     SUPABASE_SERVICE_ROLE_KEY: "service-role-secret",
-    DATABASE_URL: "postgresql://postgres:pass@example.com:5432/postgres",
     ADMIN_PASS: "Burak-admin-2026",
     ADMIN_SESSION_SECRET: "12345678901234567890"
   })

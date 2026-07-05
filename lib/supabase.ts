@@ -1,6 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 
-import { getEnv } from "@/lib/env";
+import { getPublicEnv, getServiceRoleEnv } from "@/lib/env";
 
 type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
@@ -18,7 +18,7 @@ export type GenericRow = {
 };
 
 export function createPublicSupabaseClient() {
-  const env = getEnv();
+  const env = getPublicEnv();
   return createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.NEXT_PUBLIC_SUPABASE_ANON_KEY, {
     auth: {
       persistSession: false,
@@ -28,7 +28,7 @@ export function createPublicSupabaseClient() {
 }
 
 export function createServiceRoleSupabaseClient() {
-  const env = getEnv();
+  const env = getServiceRoleEnv();
   return createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY, {
     auth: {
       persistSession: false,
