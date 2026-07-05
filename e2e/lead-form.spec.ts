@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 test("homepage lead form submits successfully", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/mvp");
   await expect(page.getByRole("link", { name: /request strategic partnership/i })).toBeVisible();
   await page.getByPlaceholder("Name").fill("Ada Lovelace");
   await page.getByPlaceholder("Email").fill("ada@example.com");
