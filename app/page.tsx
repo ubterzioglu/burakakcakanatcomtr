@@ -1,217 +1,86 @@
-import Link from "next/link";
-
-import { LeadForm } from "@/components/lead-form";
-import { MarketingShell } from "@/components/marketing-shell";
-import { getPublicSiteSnapshot, getLocaleFromParams, filterFeaturedVentures, filterPublishedInsights } from "@/lib/site-data";
-import { t } from "@/lib/i18n";
-
-type PageProps = {
-  searchParams: Promise<{ lang?: string }>;
+export const metadata = {
+  title: "Burak Akçakanat | Yakında",
+  description:
+    "Burak Akçakanat'ın yeni stratejik platformu yapım aşamasında. Çok yakında yayında."
 };
 
-export default async function HomePage({ searchParams }: PageProps) {
-  const locale = getLocaleFromParams((await searchParams).lang);
-  const snapshot = await getPublicSiteSnapshot();
-  const ventures = filterFeaturedVentures(snapshot.ventures);
-  const insights = filterPublishedInsights(snapshot.insights).slice(0, 2);
-
+export default function ComingSoonPage() {
   return (
-    <MarketingShell locale={locale}>
-      <section className="glass-panel relative overflow-hidden rounded-[2.5rem] px-6 py-12 md:px-10 md:py-14">
-        <div className="absolute inset-y-0 right-0 hidden w-1/2 bg-[radial-gradient(circle_at_center,rgba(212,176,106,0.16),transparent_56%)] lg:block" />
-        <div className="grid gap-10 lg:grid-cols-[1.3fr_0.8fr] lg:items-end">
-          <div className="space-y-7">
-            <p className="kicker">{t(snapshot.settings.heroEyebrow, locale)}</p>
-            <div className="space-y-5">
-              <p className="text-sm uppercase tracking-[0.28em] text-white/40">
-                {t(snapshot.settings.heroRibbon, locale)}
-              </p>
-              <h1 className="display-title max-w-5xl text-5xl leading-none text-white md:text-7xl">
-                {t(snapshot.settings.heroTitle, locale)}
-              </h1>
-              <p className="max-w-3xl text-base leading-8 text-white/68 md:text-lg">
-                {t(snapshot.settings.heroBody, locale)}
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <Link href={snapshot.settings.primaryCta.href} className="cta-primary">
-                {t(snapshot.settings.primaryCta.label, locale)}
-              </Link>
-              <Link href={snapshot.settings.secondaryCta.href} className="cta-secondary">
-                {t(snapshot.settings.secondaryCta.label, locale)}
-              </Link>
-            </div>
-          </div>
-          <div className="space-y-5 rounded-[2rem] border border-white/10 bg-[#07111f]/52 p-6">
-            <div className="space-y-2">
-              <p className="kicker">
-                {locale === "tr" ? "Stratejik iz düşümü" : "Strategic footprint"}
-              </p>
-              <p className="text-lg leading-8 text-white/70">{t(snapshot.settings.baseLocation, locale)}</p>
-            </div>
-            <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-1">
-              {snapshot.settings.globalStats.map((stat) => (
-                <div key={stat.value} className="rounded-[1.5rem] border border-white/8 bg-white/5 p-4">
-                  <div className="display-title text-3xl text-[#d4b06a]">{stat.value}</div>
-                  <div className="mt-2 text-sm text-white/58">{t(stat.label, locale)}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+    <main className="relative isolate flex min-h-screen items-center justify-center overflow-hidden bg-[#05070c] px-6 py-16">
+      {/* Ambient glow field */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{
+          background:
+            "radial-gradient(60% 50% at 20% 10%, rgba(212,176,106,0.16), transparent 60%)," +
+            "radial-gradient(50% 45% at 85% 8%, rgba(143,184,205,0.14), transparent 58%)," +
+            "radial-gradient(70% 70% at 50% 115%, rgba(212,176,106,0.10), transparent 60%)," +
+            "linear-gradient(180deg, #05070c 0%, #04060a 55%, #030408 100%)"
+        }}
+      />
+      {/* Grid texture */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.25]"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)," +
+            "linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)",
+          backgroundSize: "64px 64px",
+          maskImage:
+            "radial-gradient(120% 80% at 50% 20%, black, transparent 75%)",
+          WebkitMaskImage:
+            "radial-gradient(120% 80% at 50% 20%, black, transparent 75%)"
+        }}
+      />
+      {/* Floating orbs */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -left-24 top-10 -z-10 h-72 w-72 rounded-full blur-[130px]"
+        style={{ background: "rgba(212,176,106,0.22)" }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-24 bottom-10 -z-10 h-80 w-80 rounded-full blur-[140px]"
+        style={{ background: "rgba(143,184,205,0.20)" }}
+      />
 
-      <section className="grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
-        {snapshot.sections.map((section) => (
-          <div key={section.id} className="section-shell">
-            <p className="kicker">{t(section.eyebrow, locale)}</p>
-            <h2 className="display-title mt-4 text-4xl text-white md:text-5xl">
-              {t(section.title, locale)}
-            </h2>
-            <p className="mt-5 body-muted">{t(section.body, locale)}</p>
-            {section.callout ? (
-              <p className="mt-5 rounded-[1.5rem] border border-[#8fb8cd]/25 bg-[#123156]/40 p-4 text-sm leading-7 text-[#dcecf3]">
-                {t(section.callout, locale)}
-              </p>
-            ) : null}
-            <div className="mt-6 space-y-3">
-              {section.bullets.map((bullet) => (
-                <div key={bullet.en} className="flex gap-3 text-sm leading-7 text-white/68">
-                  <span className="mt-2 h-1.5 w-1.5 rounded-full bg-[#d4b06a]" />
-                  <span>{t(bullet, locale)}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
-      </section>
+      <div className="mx-auto flex w-full max-w-3xl flex-col items-center text-center">
+        <div className="mb-8 flex items-center gap-3 rounded-full border border-white/10 bg-white/[0.03] px-5 py-2 backdrop-blur-xl">
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#d4b06a]/70" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-[#d4b06a]" />
+          </span>
+          <span className="text-[11px] font-semibold uppercase tracking-[0.32em] text-white/60">
+            Yapım Aşamasında
+          </span>
+        </div>
 
-      <section id="ventures" className="section-shell">
-        <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <div>
-            <p className="kicker">{locale === "tr" ? "Venture Ekosistemi" : "Venture Ecosystem"}</p>
-            <h2 className="display-title mt-3 text-4xl text-white md:text-5xl">
-              {locale === "tr"
-                ? "Kişisel marka ile kurumsal girişim mimarisinin kesiştiği yer."
-                : "Where personal authority meets multi-platform venture architecture."}
-            </h2>
-          </div>
-        </div>
-        <div className="grid gap-5 lg:grid-cols-3">
-          {ventures.map((venture) => (
-            <Link
-              key={venture.id}
-              href={`/ventures/${venture.slug}?lang=${locale}`}
-              className={`group overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br ${venture.accent} p-[1px]`}
-            >
-              <div className="h-full rounded-[calc(2rem-1px)] bg-[#07111f]/90 p-6">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <p className="kicker">{t(venture.category, locale)}</p>
-                    <h3 className="display-title mt-4 text-3xl text-white">{venture.name}</h3>
-                  </div>
-                  <span className="rounded-full border border-white/10 px-3 py-1 text-xs uppercase tracking-[0.24em] text-white/44">
-                    {venture.metrics[0]?.value ?? "Live"}
-                  </span>
-                </div>
-                <p className="mt-5 text-sm leading-7 text-white/68">{t(venture.summary, locale)}</p>
-                <div className="mt-6 space-y-3">
-                  {venture.marketFocus.map((item) => (
-                    <div key={item.en} className="text-sm text-white/55">
-                      {t(item, locale)}
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-8 text-sm font-semibold text-[#d4b06a] group-hover:translate-x-1">
-                  {locale === "tr" ? "Detayı incele" : "Open detail"}
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
+        <p className="text-sm uppercase tracking-[0.3em] text-white/40">
+          Burak Akçakanat
+        </p>
 
-      <section className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-        <div className="section-shell">
-          <p className="kicker">{locale === "tr" ? "Liderlik Yolculuğu" : "Leadership Journey"}</p>
-          <h2 className="display-title mt-3 text-4xl text-white md:text-5xl">
-            {locale === "tr"
-              ? "Deneyim, yalnızca süre değil; farklı sistemler arasında kurulan karar kalitesidir."
-              : "Experience is not just duration. It is decision quality built across different systems."}
-          </h2>
-        </div>
-        <div className="section-shell">
-          <div className="space-y-5">
-            {snapshot.timeline.map((entry) => (
-              <div key={entry.id} className="grid gap-2 border-l border-white/12 pl-5">
-                <p className="text-xs uppercase tracking-[0.26em] text-[#8fb8cd]">{t(entry.period, locale)}</p>
-                <h3 className="display-title text-2xl text-white">{t(entry.title, locale)}</h3>
-                <p className="text-sm font-semibold text-white/55">{entry.org}</p>
-                <p className="text-sm leading-7 text-white/62">{t(entry.body, locale)}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+        <h1 className="mt-5 bg-gradient-to-br from-white via-white to-[#d4b06a] bg-clip-text text-[clamp(2.6rem,7vw,5rem)] font-bold leading-[1.02] tracking-[-0.04em] text-transparent">
+          Çok yakında
+          <br />
+          yayında.
+        </h1>
 
-      <section className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr]">
-        <div className="section-shell">
-          <p className="kicker">{locale === "tr" ? "Yayın ve Fikir" : "Publication and Thought"}</p>
-          <h2 className="display-title mt-3 text-4xl text-white md:text-5xl">
-            Human Consciousness Decoded
-          </h2>
-          <p className="mt-5 body-muted">
-            {locale === "tr"
-              ? "Koçluk, liderlik ve davranış kalıplarını kurucu düzeyde ele alan çerçeve."
-              : "The foundational framework translating coaching, leadership, and behavioral patterns at founder level."}
-          </p>
-          <div className="mt-6 space-y-4">
-            {snapshot.publications.map((publication) => (
-              <a
-                key={publication.id}
-                href={publication.url}
-                target="_blank"
-                rel="noreferrer"
-                className="block rounded-[1.5rem] border border-white/10 bg-white/4 p-4"
-              >
-                <div className="text-xs uppercase tracking-[0.25em] text-[#8fb8cd]">
-                  {t(publication.kind, locale)}
-                </div>
-                <div className="display-title mt-3 text-2xl text-white">{t(publication.title, locale)}</div>
-                <div className="mt-2 text-sm text-white/58">{t(publication.subtitle, locale)}</div>
-              </a>
-            ))}
-          </div>
-        </div>
-        <div className="section-shell">
-          <div className="mb-6 flex items-end justify-between gap-4">
-            <div>
-              <p className="kicker">{locale === "tr" ? "İçgörüler" : "Insights"}</p>
-              <h2 className="display-title mt-3 text-4xl text-white md:text-5xl">
-                {locale === "tr" ? "Güven, sermaye ve liderlik üzerine notlar." : "Notes on trust, capital, and leadership."}
-              </h2>
-            </div>
-            <Link href={`/insights?lang=${locale}`} className="text-sm font-semibold text-[#d4b06a]">
-              {locale === "tr" ? "Tüm yazılar" : "All essays"}
-            </Link>
-          </div>
-          <div className="grid gap-5">
-            {insights.map((insight) => (
-              <Link
-                key={insight.id}
-                href={`/insights/${insight.slug}?lang=${locale}`}
-                className="rounded-[1.75rem] border border-white/10 bg-white/4 p-5"
-              >
-                <div className="text-xs uppercase tracking-[0.25em] text-[#8fb8cd]">{insight.publishedAt}</div>
-                <div className="display-title mt-3 text-3xl text-white">{t(insight.title, locale)}</div>
-                <p className="mt-3 text-sm leading-7 text-white/62">{t(insight.excerpt, locale)}</p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
+        <p className="mt-6 max-w-xl text-base leading-8 text-white/60 md:text-lg">
+          Yeni stratejik platform üzerinde çalışıyoruz. Venture mimarisi,
+          liderlik zekâsı ve büyüme stratejisi tek bir premium deneyimde
+          buluşuyor.
+        </p>
 
-      <LeadForm locale={locale} />
-    </MarketingShell>
+        <div className="mt-10 flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.28em] text-white/25">
+          <span>Doha</span>
+          <span className="h-1 w-1 rounded-full bg-white/20" />
+          <span>Dubai</span>
+          <span className="h-1 w-1 rounded-full bg-white/20" />
+          <span>Istanbul</span>
+        </div>
+      </div>
+    </main>
   );
 }
