@@ -1,0 +1,12 @@
+.next
+coverage
+node_modules
+playwright-report
+test-results
+*.log
+.env
+.env.local
+.env*.local
+.omc
+tsconfig.tsbuildinfo
+Profile.pdf
