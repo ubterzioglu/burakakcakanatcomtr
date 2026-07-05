@@ -7,7 +7,7 @@ export default defineConfig({
     trace: "on-first-retry"
   },
   webServer: {
-    command: "npm run build && npm run start",
+    command: "npm run build:standalone && node --env-file=.env.local .next/standalone/server.js",
     port: 3000,
     reuseExistingServer: false,
     timeout: 180000
