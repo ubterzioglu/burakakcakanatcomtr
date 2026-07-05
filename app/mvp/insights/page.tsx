@@ -27,7 +27,7 @@ export default async function InsightsPage({ searchParams }: PageProps) {
         {insights.map((insight) => (
           <Link
             key={insight.id}
-            href={`/insights/${insight.slug}?lang=${locale}`}
+            href={`/mvp/insights/${insight.slug}?lang=${locale}`}
             className="section-shell block hover:border-[#8fb8cd]/35"
           >
             <div className="text-xs uppercase tracking-[0.24em] text-[#8fb8cd]">{insight.publishedAt}</div>

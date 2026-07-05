@@ -8,23 +8,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     {
-      url: base,
+      url: base
+    },
+    {
+      url: `${base}/mvp`,
       lastModified: new Date()
     },
     {
-      url: `${base}/insights`,
+      url: `${base}/mvp/insights`,
       lastModified: new Date()
     },
     {
-      url: `${base}/contact`,
+      url: `${base}/mvp/contact`,
       lastModified: new Date()
     },
     ...snapshot.ventures.map((venture) => ({
-      url: `${base}/ventures/${venture.slug}`,
+      url: `${base}/mvp/ventures/${venture.slug}`,
       lastModified: new Date()
     })),
     ...snapshot.insights.map((insight) => ({
-      url: `${base}/insights/${insight.slug}`,
+      url: `${base}/mvp/insights/${insight.slug}`,
       lastModified: new Date(insight.publishedAt)
     }))
   ];

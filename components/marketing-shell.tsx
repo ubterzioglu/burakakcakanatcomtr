@@ -30,7 +30,7 @@ export function MarketingShell({ children, locale }: Props) {
   return (
     <div className="site-frame">
       <header className="mx-auto flex w-full max-w-7xl items-center justify-between px-6 pb-8 pt-6 md:px-10">
-        <Link href={`/?lang=${locale}`} className="space-y-1">
+        <Link href={`/mvp?lang=${locale}`} className="space-y-1">
           <div className="kicker">Burak Akçakanat</div>
           <div className="display-title text-xl text-white md:text-2xl">
             burakakcakanat.com.tr
@@ -38,13 +38,13 @@ export function MarketingShell({ children, locale }: Props) {
         </Link>
         <div className="hidden items-center gap-6 md:flex">
           <nav className="flex items-center gap-5 text-sm text-white/70">
-            <Link href={`/?lang=${locale}`} className="hover:text-white">
+            <Link href={`/mvp?lang=${locale}`} className="hover:text-white">
               {copy.home}
             </Link>
-            <Link href={`/insights?lang=${locale}`} className="hover:text-white">
+            <Link href={`/mvp/insights?lang=${locale}`} className="hover:text-white">
               {copy.insights}
             </Link>
-            <Link href={`/contact?lang=${locale}`} className="hover:text-white">
+            <Link href={`/mvp/contact?lang=${locale}`} className="hover:text-white">
               {copy.contact}
             </Link>
             <Link href="/admin" className="hover:text-white">

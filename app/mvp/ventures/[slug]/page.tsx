@@ -32,7 +32,7 @@ export default async function VentureDetailPage({ params, searchParams }: PagePr
                 {locale === "tr" ? "Resmi bağlantıyı aç" : "Open official link"}
               </a>
             ) : null}
-            <Link href={`/?lang=${locale}#connect`} className="cta-secondary">
+            <Link href={`/mvp?lang=${locale}#connect`} className="cta-secondary">
               {locale === "tr" ? "İş birliği başlat" : "Start collaboration"}
             </Link>
           </div>
