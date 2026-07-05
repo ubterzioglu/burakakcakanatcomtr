@@ -11,6 +11,7 @@ import {
   BAKCAKANAT_BRAND_GRADIENT,
   BAKCAKANAT_EMERALD
 } from "@/app/bakcakanat/_components/theme";
+import { FilterSelect } from "@/app/bakcakanat/_components/filter-select";
 import {
   getAllAkcakanatDomainsAdmin,
   getAkcakanatDomainByIdAdmin,
@@ -49,12 +50,9 @@ const darkInput =
 const formLabel =
   "mb-1 block text-[11px] font-semibold uppercase tracking-[0.14em] text-white/50";
 
-// Filter chip styling (mirrors the /batubt board).
-const chipBase = "rounded-full px-3 py-1 text-[11px] font-semibold transition";
-const chipActive =
-  "bg-[#34D399] text-black shadow-[0_8px_24px_-8px_rgba(52,211,153,0.6)]";
-const chipIdle =
-  "border border-white/10 bg-white/[0.04] text-white/70 hover:border-[#34D399]/40 hover:text-white";
+// Filter dropdown styling — compact selects laid out side by side.
+const filterSelect =
+  "w-full rounded-[0.7rem] border border-white/10 bg-white/[0.04] px-3 py-2 text-[13px] font-semibold text-white outline-none transition focus:border-[#34D399]/55 focus:bg-white/[0.06] focus:ring-4 focus:ring-[#34D399]/12";
 
 // Importance rank options: 1 = most important, 10 = least important.
 const PRIORITY_OPTIONS = Array.from({ length: 10 }, (_, index) => {
@@ -545,119 +543,71 @@ export default async function BakcakanatPage({
           </form>
         </details>
 
-        {/* Filters — one group per field */}
+        {/* Filters — compact dropdowns laid out side by side */}
         <section className="rounded-[1.3rem] border border-white/10 bg-white/[0.03] px-6 py-4 backdrop-blur-xl sm:px-8">
-          <div className="flex flex-col gap-3">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="w-24 shrink-0 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/40">
-                Önem
-              </span>
-              <a
-                href={filterHref("priority", "")}
-                className={`${chipBase} ${filters.priority ? chipIdle : chipActive}`}
-              >
-                Tümü
-              </a>
-              {priorityValues.map((value) => (
-                <a
-                  key={value}
-                  href={filterHref("priority", String(value))}
-                  title="1 en önemli · 10 en önemsiz"
-                  className={`${chipBase} ${
-                    filters.priority === String(value) ? chipActive : chipIdle
-                  }`}
-                >
-                  {value}
-                </a>
-              ))}
-            </div>
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="w-24 shrink-0 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/40">
-                Email
-              </span>
-              {[
-                { value: "", label: "Tümü" },
-                { value: "var", label: "Var" },
-                { value: "yok", label: "Yok" }
-              ].map((option) => (
-                <a
-                  key={option.label}
-                  href={filterHref("email", option.value)}
-                  className={`${chipBase} ${
-                    filters.email === option.value ? chipActive : chipIdle
-                  }`}
-                >
-                  {option.label}
-                </a>
-              ))}
-            </div>
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="w-24 shrink-0 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/40">
-                Yönlendirme
-              </span>
-              {[
-                { value: "", label: "Tümü" },
-                { value: "var", label: "Var" },
-                { value: "yok", label: "Yok" }
-              ].map((option) => (
-                <a
-                  key={option.label}
-                  href={filterHref("redirect", option.value)}
-                  className={`${chipBase} ${
-                    filters.redirect === option.value ? chipActive : chipIdle
-                  }`}
-                >
-                  {option.label}
-                </a>
-              ))}
-            </div>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            <FilterSelect
+              label="Önem"
+              value={filters.priority}
+              className={filterSelect}
+              options={[
+                { value: "", label: "Tümü", href: filterHref("priority", "") },
+                ...priorityValues.map((value) => ({
+                  value: String(value),
+                  label: `${value}`,
+                  href: filterHref("priority", String(value))
+                }))
+              ]}
+            />
+            <FilterSelect
+              label="Email"
+              value={filters.email}
+              className={filterSelect}
+              options={[
+                { value: "", label: "Tümü", href: filterHref("email", "") },
+                { value: "var", label: "Var", href: filterHref("email", "var") },
+                { value: "yok", label: "Yok", href: filterHref("email", "yok") }
+              ]}
+            />
+            <FilterSelect
+              label="Yönlendirme"
+              value={filters.redirect}
+              className={filterSelect}
+              options={[
+                { value: "", label: "Tümü", href: filterHref("redirect", "") },
+                { value: "var", label: "Var", href: filterHref("redirect", "var") },
+                { value: "yok", label: "Yok", href: filterHref("redirect", "yok") }
+              ]}
+            />
             {hostingValues.length > 0 && (
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="w-24 shrink-0 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/40">
-                  Hosting
-                </span>
-                <a
-                  href={filterHref("hosting", "")}
-                  className={`${chipBase} ${filters.hosting ? chipIdle : chipActive}`}
-                >
-                  Tümü
-                </a>
-                {hostingValues.map((value) => (
-                  <a
-                    key={value}
-                    href={filterHref("hosting", value)}
-                    className={`${chipBase} ${
-                      filters.hosting === value ? chipActive : chipIdle
-                    }`}
-                  >
-                    {value}
-                  </a>
-                ))}
-              </div>
+              <FilterSelect
+                label="Hosting"
+                value={filters.hosting}
+                className={filterSelect}
+                options={[
+                  { value: "", label: "Tümü", href: filterHref("hosting", "") },
+                  ...hostingValues.map((value) => ({
+                    value,
+                    label: value,
+                    href: filterHref("hosting", value)
+                  }))
+                ]}
+              />
             )}
             {paymentValues.length > 0 && (
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="w-24 shrink-0 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/40">
-                  Ödeme
-                </span>
-                <a
-                  href={filterHref("payment", "")}
-                  className={`${chipBase} ${filters.payment ? chipIdle : chipActive}`}
-                >
-                  Tümü
-                </a>
-                {paymentValues.map((value) => (
-                  <a
-                    key={value}
-                    href={filterHref("payment", value)}
-                    className={`${chipBase} ${
-                      filters.payment === value ? chipActive : chipIdle
-                    }`}
-                  >
-                    {value}
-                  </a>
-                ))}
-              </div>
+              <FilterSelect
+                label="Ödeme"
+                value={filters.payment}
+                className={filterSelect}
+                options={[
+                  { value: "", label: "Tümü", href: filterHref("payment", "") },
+                  ...paymentValues.map((value) => ({
+                    value,
+                    label: value,
+                    href: filterHref("payment", value)
+                  }))
+                ]}
+              />
             )}
           </div>
         </section>
