@@ -15,6 +15,10 @@ type Props = {
   snapshot: Snapshot;
 };
 
+function countOf(value: unknown): number {
+  return Array.isArray(value) ? value.length : 0;
+}
+
 export function AdminDashboard({ snapshot }: Props) {
   const router = useRouter();
   const [active, setActive] = useState<string>("updates");
@@ -28,7 +32,10 @@ export function AdminDashboard({ snapshot }: Props) {
   const navGroups = [
     {
       title: "Çalışma alanı",
-      items: [{ id: "updates", label: "Güncellemeler" }]
+      items: [
+        { id: "updates", label: "Güncellemeler" },
+        { id: "content", label: "İçerik" }
+      ]
     },
     {
       title: "Projeler",
@@ -53,7 +60,8 @@ export function AdminDashboard({ snapshot }: Props) {
         <MobileNav navGroups={navGroups} active={active} onSelect={setActive} onLogout={() => void logout()} />
         <main className="min-w-0 flex-1 px-5 py-8 md:px-8 lg:px-10">
           <div className="mx-auto w-full max-w-6xl">
-            {active === "updates" ? <UpdatesSection snapshot={snapshot} /> : null}
+            {active === "updates" ? <OverviewSection snapshot={snapshot} onSelect={setActive} /> : null}
+            {active === "content" ? <ContentSection snapshot={snapshot} /> : null}
             {activeProject ? <ProjectSection project={activeProject} /> : null}
           </div>
         </main>
@@ -171,12 +179,84 @@ function SectionHeader({ kicker, title, description }: { kicker: string; title: 
   );
 }
 
-function UpdatesSection({ snapshot }: { snapshot: Snapshot }) {
+function OverviewSection({ snapshot, onSelect }: { snapshot: Snapshot; onSelect: (id: string) => void }) {
+  const stats = [
+    { label: "Ventures", value: countOf(snapshot.ventures) },
+    { label: "Insights", value: countOf(snapshot.insights) },
+    { label: "Publications", value: countOf(snapshot.publications) },
+    { label: "Leadler", value: countOf(snapshot.leads) }
+  ];
+
+  const firstProjectId = adminProjects[0]?.id;
+
+  const actions = [
+    {
+      title: "İçeriği güncelle",
+      description: "Hero, ventures, insights ve publications içeriğini JSON olarak düzenle.",
+      cta: "İçeriğe git",
+      onClick: () => onSelect("content")
+    },
+    {
+      title: "Leadleri incele",
+      description: "Gelen partnership, investor ve consulting taleplerini görüntüle ve durum ata.",
+      cta: "Leadlere git",
+      onClick: () => onSelect("content")
+    },
+    {
+      title: "Projelere geç",
+      description: "Shaman Life, Qualtron Sinclair, HCD ve PayAL admin panellerine hızlı erişim.",
+      cta: "Projeleri aç",
+      onClick: () => firstProjectId && onSelect(firstProjectId)
+    }
+  ];
+
+  return (
+    <div className="space-y-9">
+      <SectionHeader
+        kicker="Bakçakanat"
+        title="Güncellemeler"
+        description="Yönetim paneline hoş geldin. Buradan sitenin içeriğini düzenleyebilir, gelen leadleri inceleyebilir ve diğer projelerin admin panellerine geçebilirsin."
+      />
+
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+        {stats.map((stat) => (
+          <div key={stat.label} className="adm-card p-4">
+            <p className="text-2xl font-semibold tracking-tight text-white">{stat.value}</p>
+            <p className="mt-1 text-xs text-zinc-500">{stat.label}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="space-y-3">
+        <p className="adm-kicker">Ne yapabilirsin?</p>
+        <div className="grid gap-4 md:grid-cols-3">
+          {actions.map((action) => (
+            <button
+              key={action.title}
+              type="button"
+              onClick={action.onClick}
+              className="adm-card group flex flex-col p-5 text-left transition hover:border-white/20 hover:bg-white/[0.04]"
+            >
+              <p className="text-base font-semibold text-white">{action.title}</p>
+              <p className="mt-1.5 flex-1 text-sm leading-relaxed text-zinc-500">{action.description}</p>
+              <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-indigo-300 transition group-hover:text-indigo-200">
+                {action.cta}
+                <span aria-hidden>→</span>
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ContentSection({ snapshot }: { snapshot: Snapshot }) {
   return (
     <div className="space-y-8">
       <SectionHeader
         kicker="Bakçakanat"
-        title="Güncellemeler"
+        title="İçerik"
         description="Sitenin hero, ventures, insights, publications içeriğini ve gelen leadleri buradan güncelleyin. Alanlar Supabase'te typed JSON olarak saklanır."
       />
 
