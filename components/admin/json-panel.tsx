@@ -48,30 +48,34 @@ export function AdminJsonPanel({ title, resource, description, initialValue }: P
   }
 
   return (
-    <section className="admin-card space-y-4">
-      <div className="space-y-2">
-        <h3 className="display-title text-2xl text-white">{title}</h3>
-        <p className="text-sm leading-6 text-white/58">{description}</p>
+    <section className="adm-card space-y-4 p-5">
+      <div className="space-y-1.5">
+        <div className="flex items-center justify-between gap-3">
+          <h3 className="text-base font-semibold text-white">{title}</h3>
+          <span className="adm-badge">{resource}</span>
+        </div>
+        <p className="text-[0.8rem] leading-relaxed text-zinc-500">{description}</p>
       </div>
       <textarea
         value={value}
         onChange={(event) => setValue(event.target.value)}
-        className="field min-h-80 font-mono text-xs leading-6"
+        className="adm-field min-h-72 resize-y font-mono text-xs leading-6"
+        spellCheck={false}
       />
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <p
           className={cn(
             "text-sm",
             status === "success"
-              ? "text-emerald-300"
+              ? "text-emerald-400"
               : status === "error"
-                ? "text-rose-300"
-                : "text-white/44"
+                ? "text-rose-400"
+                : "text-zinc-500"
           )}
         >
           {message || "Edit JSON directly, then sync the resource."}
         </p>
-        <button className="cta-secondary" type="button" onClick={() => void save()}>
+        <button className="adm-btn adm-btn-ghost" type="button" onClick={() => void save()}>
           {status === "saving" ? "Saving..." : "Sync resource"}
         </button>
       </div>

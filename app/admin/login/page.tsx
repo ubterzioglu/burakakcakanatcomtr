@@ -9,17 +9,19 @@ export default async function AdminLoginPage() {
   }
 
   return (
-    <div className="mx-auto grid min-h-[80vh] max-w-6xl items-center gap-8 lg:grid-cols-[1.1fr_0.9fr]">
-      <section className="space-y-5">
-        <p className="kicker">Private studio</p>
-        <h1 className="display-title max-w-4xl text-5xl text-white md:text-7xl">
-          Admin surface for the premium narrative layer.
-        </h1>
-        <p className="max-w-2xl text-base leading-8 text-white/62">
-          Sign in with the protected admin password to edit hero copy, ventures, insights, publications, and inbound leads stored in Supabase.
-        </p>
-      </section>
-      <AdminLoginForm />
+    <div className="flex min-h-screen items-center justify-center px-5 py-12">
+      <div className="w-full max-w-sm space-y-8">
+        <div className="space-y-3 text-center">
+          <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-2xl bg-indigo-500/90 text-sm font-bold text-white shadow-[0_10px_30px_rgba(79,70,229,0.4)]">
+            BA
+          </div>
+          <div className="space-y-1">
+            <h1 className="text-xl font-semibold tracking-tight text-white">Admin girişi</h1>
+            <p className="text-sm text-zinc-500">Devam etmek için admin şifresini girin.</p>
+          </div>
+        </div>
+        <AdminLoginForm />
+      </div>
     </div>
   );
 }

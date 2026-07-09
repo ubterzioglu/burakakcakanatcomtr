@@ -102,4 +102,58 @@ select {
   .admin-card {
     @apply rounded-[1.75rem] border border-white/10 bg-[#07111f]/70 p-5 shadow-[0_24px_60px_rgba(0,0,0,0.22)];
   }
+
+  /* ------------------------------------------------------------------ */
+  /* Admin design system — fully independent from the public site theme. */
+  /* Neutral zinc surfaces + indigo accent + system sans-serif.          */
+  /* ------------------------------------------------------------------ */
+  .admin-root {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #e5e7eb;
+    min-height: 100vh;
+    background:
+      radial-gradient(1000px 520px at 12% -12%, rgba(99, 102, 241, 0.12), transparent 60%),
+      radial-gradient(760px 520px at 100% 0%, rgba(56, 189, 248, 0.07), transparent 55%),
+      #09090b;
+  }
+
+  .adm-kicker {
+    @apply text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-indigo-300/80;
+  }
+
+  .adm-title {
+    @apply text-2xl font-semibold tracking-tight text-white md:text-[1.75rem];
+  }
+
+  .adm-card {
+    @apply rounded-2xl border border-white/10 bg-white/[0.02] shadow-[0_1px_0_0_rgba(255,255,255,0.03)_inset];
+  }
+
+  .adm-nav {
+    @apply flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-sm font-medium text-zinc-400 transition hover:bg-white/[0.05] hover:text-zinc-100;
+  }
+
+  .adm-nav-active {
+    @apply bg-white/[0.07] text-white shadow-[0_1px_0_0_rgba(255,255,255,0.05)_inset];
+  }
+
+  .adm-field {
+    @apply w-full rounded-xl border border-white/10 bg-black/30 px-3.5 py-2.5 text-sm text-zinc-100 outline-none transition placeholder:text-zinc-600 focus:border-indigo-400/60 focus:bg-black/50 focus:ring-2 focus:ring-indigo-500/15;
+  }
+
+  .adm-btn {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .adm-btn-primary {
+    @apply bg-indigo-500 text-white shadow-[0_8px_24px_rgba(79,70,229,0.28)] hover:bg-indigo-400;
+  }
+
+  .adm-btn-ghost {
+    @apply border border-white/12 bg-white/[0.03] text-zinc-200 hover:border-white/25 hover:bg-white/[0.07];
+  }
+
+  .adm-badge {
+    @apply inline-flex items-center rounded-md border border-white/10 bg-white/[0.03] px-2 py-0.5 font-mono text-[0.65rem] text-zinc-500;
+  }
 }

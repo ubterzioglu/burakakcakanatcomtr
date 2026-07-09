@@ -17,7 +17,7 @@ type Props = {
 
 export function AdminDashboard({ snapshot }: Props) {
   const router = useRouter();
-  const [active, setActive] = useState<string>("bakcakanat");
+  const [active, setActive] = useState<string>("updates");
 
   async function logout() {
     await fetch("/api/admin/logout", { method: "POST" });
@@ -27,11 +27,8 @@ export function AdminDashboard({ snapshot }: Props) {
 
   const navGroups = [
     {
-      title: "Bu site",
-      items: [
-        { id: "bakcakanat", label: "Bakçakanat — İçerik" },
-        { id: "updates", label: "Güncellemeler" }
-      ]
+      title: "Çalışma alanı",
+      items: [{ id: "updates", label: "Güncellemeler" }]
     },
     {
       title: "Projeler",
@@ -42,72 +39,148 @@ export function AdminDashboard({ snapshot }: Props) {
   const activeProject = adminProjects.find((project) => project.id === active);
 
   return (
-    <div className="flex flex-col gap-6 lg:flex-row">
-      <aside className="lg:w-72 lg:flex-shrink-0">
-        <div className="glass-panel space-y-6 rounded-[1.75rem] p-4 lg:sticky lg:top-8">
-          <div className="space-y-1 px-2 pt-2">
-            <p className="kicker">Private studio</p>
-            <h2 className="display-title text-xl text-white">Admin</h2>
-          </div>
-
-          <nav className="space-y-5">
-            {navGroups.map((group) => (
-              <div key={group.title} className="space-y-2">
-                <p className="px-3 text-[0.65rem] uppercase tracking-[0.3em] text-white/40">{group.title}</p>
-                <ul className="space-y-1">
-                  {group.items.map((item) => (
-                    <li key={item.id}>
-                      <button
-                        type="button"
-                        onClick={() => setActive(item.id)}
-                        className={cn(
-                          "w-full rounded-2xl border px-3 py-2.5 text-left text-sm transition",
-                          active === item.id
-                            ? "border-white/15 bg-white/10 text-white"
-                            : "border-transparent text-white/60 hover:bg-white/5 hover:text-white"
-                        )}
-                      >
-                        {item.label}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </nav>
-
-          <div className="px-2">
-            <button className="cta-secondary w-full" type="button" onClick={() => void logout()}>
-              Sign out
-            </button>
-          </div>
-        </div>
+    <div className="mx-auto flex min-h-screen w-full max-w-[1440px]">
+      <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-white/8 px-4 py-6 lg:flex">
+        <SidebarBody
+          navGroups={navGroups}
+          active={active}
+          onSelect={setActive}
+          onLogout={() => void logout()}
+        />
       </aside>
 
-      <main className="min-w-0 flex-1 space-y-6">
-        {active === "bakcakanat" ? <ContentSection snapshot={snapshot} /> : null}
-        {active === "updates" ? <UpdatesSection /> : null}
-        {activeProject ? <ProjectSection project={activeProject} /> : null}
-      </main>
+      <div className="flex min-w-0 flex-1 flex-col">
+        <MobileNav navGroups={navGroups} active={active} onSelect={setActive} onLogout={() => void logout()} />
+        <main className="min-w-0 flex-1 px-5 py-8 md:px-8 lg:px-10">
+          <div className="mx-auto w-full max-w-6xl">
+            {active === "updates" ? <UpdatesSection snapshot={snapshot} /> : null}
+            {activeProject ? <ProjectSection project={activeProject} /> : null}
+          </div>
+        </main>
+      </div>
     </div>
   );
 }
 
-function ContentSection({ snapshot }: { snapshot: Snapshot }) {
-  return (
-    <div className="space-y-6">
-      <section className="glass-panel rounded-[2rem] p-6 md:p-8">
-        <div className="space-y-3">
-          <p className="kicker">Bakçakanat</p>
-          <h1 className="display-title max-w-3xl text-3xl text-white md:text-5xl">İçerik yönetimi</h1>
-          <p className="body-muted max-w-2xl">
-            Bu site için hero, ventures, insights, publications ve gelen leadleri düzenleyin. Alanlar
-            Supabase&apos;te typed JSON olarak saklanır.
-          </p>
-        </div>
-      </section>
+type NavGroup = { title: string; items: { id: string; label: string }[] };
 
-      <div className="grid gap-6 xl:grid-cols-2">
+function SidebarBody({
+  navGroups,
+  active,
+  onSelect,
+  onLogout
+}: {
+  navGroups: NavGroup[];
+  active: string;
+  onSelect: (id: string) => void;
+  onLogout: () => void;
+}) {
+  return (
+    <>
+      <div className="flex items-center gap-3 px-2">
+        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-500/90 text-sm font-bold text-white shadow-[0_8px_20px_rgba(79,70,229,0.35)]">
+          BA
+        </div>
+        <div className="leading-tight">
+          <p className="text-sm font-semibold text-white">Admin</p>
+          <p className="text-xs text-zinc-500">Burak Akçakanat</p>
+        </div>
+      </div>
+
+      <nav className="mt-8 flex-1 space-y-6 overflow-y-auto">
+        {navGroups.map((group) => (
+          <div key={group.title} className="space-y-1.5">
+            <p className="px-3 text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-zinc-600">
+              {group.title}
+            </p>
+            <ul className="space-y-1">
+              {group.items.map((item) => (
+                <li key={item.id}>
+                  <button
+                    type="button"
+                    onClick={() => onSelect(item.id)}
+                    className={cn("adm-nav", active === item.id && "adm-nav-active")}
+                  >
+                    {item.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </nav>
+
+      <button type="button" onClick={onLogout} className="adm-btn adm-btn-ghost mt-4 w-full">
+        Sign out
+      </button>
+    </>
+  );
+}
+
+function MobileNav({
+  navGroups,
+  active,
+  onSelect,
+  onLogout
+}: {
+  navGroups: NavGroup[];
+  active: string;
+  onSelect: (id: string) => void;
+  onLogout: () => void;
+}) {
+  const items = navGroups.flatMap((group) => group.items);
+  return (
+    <div className="border-b border-white/8 px-5 py-4 lg:hidden">
+      <div className="mb-3 flex items-center justify-between">
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500/90 text-xs font-bold text-white">
+            BA
+          </div>
+          <span className="text-sm font-semibold text-white">Admin</span>
+        </div>
+        <button type="button" onClick={onLogout} className="text-xs font-medium text-zinc-400 hover:text-white">
+          Sign out
+        </button>
+      </div>
+      <div className="flex gap-2 overflow-x-auto pb-1">
+        {items.map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            onClick={() => onSelect(item.id)}
+            className={cn(
+              "whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-medium transition",
+              active === item.id ? "bg-white/[0.08] text-white" : "text-zinc-400 hover:text-white"
+            )}
+          >
+            {item.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function SectionHeader({ kicker, title, description }: { kicker: string; title: string; description: string }) {
+  return (
+    <div className="space-y-2">
+      <p className="adm-kicker">{kicker}</p>
+      <h1 className="adm-title text-3xl md:text-4xl">{title}</h1>
+      <p className="max-w-2xl text-sm leading-relaxed text-zinc-400">{description}</p>
+    </div>
+  );
+}
+
+function UpdatesSection({ snapshot }: { snapshot: Snapshot }) {
+  return (
+    <div className="space-y-8">
+      <SectionHeader
+        kicker="Bakçakanat"
+        title="Güncellemeler"
+        description="Sitenin hero, ventures, insights, publications içeriğini ve gelen leadleri buradan güncelleyin. Alanlar Supabase'te typed JSON olarak saklanır."
+      />
+
+      <div className="grid gap-5 xl:grid-cols-2">
         <AdminJsonPanel
           title="Site settings"
           resource="site_settings"
@@ -159,44 +232,23 @@ function ContentSection({ snapshot }: { snapshot: Snapshot }) {
 
 function ProjectSection({ project }: { project: AdminProject }) {
   return (
-    <section className="glass-panel space-y-6 rounded-[2rem] p-6 md:p-8">
-      <div className="space-y-3">
-        <p className="kicker">Proje kısayolu</p>
-        <h1 className="display-title text-3xl text-white md:text-5xl">{project.name}</h1>
-        <p className="body-muted max-w-2xl">{project.description}</p>
-      </div>
+    <div className="space-y-8">
+      <SectionHeader kicker="Proje kısayolu" title={project.name} description={project.description} />
 
-      <div className="admin-card flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div className="adm-card flex flex-col gap-5 p-6 md:flex-row md:items-center md:justify-between">
         <div className="space-y-1">
-          <p className="text-xs uppercase tracking-[0.28em] text-white/45">Admin paneli</p>
-          <p className="break-all font-mono text-sm text-white/80">{project.domain}</p>
+          <p className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-zinc-500">Admin paneli</p>
+          <p className="break-all font-mono text-sm text-zinc-200">{project.domain}</p>
         </div>
-        <a href={project.adminUrl} target="_blank" rel="noopener noreferrer" className="cta-primary">
-          Admin panelini aç ↗
+        <a href={project.adminUrl} target="_blank" rel="noopener noreferrer" className="adm-btn adm-btn-primary">
+          Admin panelini aç
+          <span aria-hidden>↗</span>
         </a>
       </div>
 
-      <p className="text-xs leading-6 text-white/40">
-        Bağlantı yeni sekmede açılır ve ilgili sitenin kendi admin şifresini sorar.
+      <p className="text-xs leading-6 text-zinc-500">
+        Bağlantı yeni sekmede açılır ve ilgili sitenin kendi admin şifresini sorar. Burada hiçbir şifre saklanmaz.
       </p>
-    </section>
-  );
-}
-
-function UpdatesSection() {
-  return (
-    <section className="glass-panel space-y-6 rounded-[2rem] p-6 md:p-8">
-      <div className="space-y-3">
-        <p className="kicker">Güncellemeler</p>
-        <h1 className="display-title text-3xl text-white md:text-5xl">Güncellemeler</h1>
-        <p className="body-muted max-w-2xl">
-          Projeler arası notlar ve değişiklik kayıtları burada tutulacak.
-        </p>
-      </div>
-
-      <div className="admin-card text-sm leading-7 text-white/55">
-        Henüz güncelleme kaydı yok. Bu bölüm ileride değişiklik geçmişi ve notlar için kullanılacak.
-      </div>
-    </section>
+    </div>
   );
 }

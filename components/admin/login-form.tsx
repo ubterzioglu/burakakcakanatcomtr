@@ -34,21 +34,22 @@ export function AdminLoginForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="admin-card space-y-5">
+    <form onSubmit={onSubmit} className="adm-card space-y-4 p-6">
       <div className="space-y-2">
-        <label className="text-sm uppercase tracking-[0.28em] text-white/55">Password</label>
+        <label className="text-xs font-medium uppercase tracking-wider text-zinc-500">Password</label>
         <input
           type="password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
-          className="field"
+          className="adm-field"
           placeholder="Enter admin password"
+          autoFocus
           required
         />
       </div>
-      {error ? <p className="text-sm text-rose-300">{error}</p> : null}
-      <button className="cta-primary w-full" type="submit" disabled={isLoading}>
-        {isLoading ? "Opening..." : "Open private studio"}
+      {error ? <p className="text-sm text-rose-400">{error}</p> : null}
+      <button className="adm-btn adm-btn-primary w-full" type="submit" disabled={isLoading}>
+        {isLoading ? "Opening..." : "Sign in"}
       </button>
     </form>
   );

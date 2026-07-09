@@ -31,45 +31,43 @@ export function AdminLeadsTable({ leads }: Props) {
   }
 
   return (
-    <section className="admin-card space-y-5">
+    <section className="adm-card space-y-5 p-5">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="display-title text-2xl text-white">Lead submissions</h3>
-          <p className="text-sm text-white/55">Partnership, investor, consulting, and community interest flows.</p>
+          <h3 className="text-base font-semibold text-white">Lead submissions</h3>
+          <p className="text-[0.8rem] text-zinc-500">Partnership, investor, consulting, and community interest flows.</p>
         </div>
-        <div className="rounded-full border border-white/12 px-4 py-2 text-xs uppercase tracking-[0.3em] text-white/58">
-          {rows.length} records
-        </div>
+        <div className="adm-badge">{rows.length} records</div>
       </div>
       <div className="overflow-x-auto">
         <table className="min-w-full text-left text-sm">
-          <thead className="text-white/50">
+          <thead className="text-[0.7rem] uppercase tracking-wider text-zinc-500">
             <tr>
-              <th className="px-3 py-3">Name</th>
-              <th className="px-3 py-3">Intent</th>
-              <th className="px-3 py-3">Locale</th>
-              <th className="px-3 py-3">Date</th>
-              <th className="px-3 py-3">Status</th>
+              <th className="px-3 py-3 font-medium">Name</th>
+              <th className="px-3 py-3 font-medium">Intent</th>
+              <th className="px-3 py-3 font-medium">Locale</th>
+              <th className="px-3 py-3 font-medium">Date</th>
+              <th className="px-3 py-3 font-medium">Status</th>
             </tr>
           </thead>
           <tbody>
             {rows.map((lead) => (
               <tr key={lead.id} className="border-t border-white/8">
                 <td className="px-3 py-4 align-top">
-                  <div className="font-medium text-white">{lead.name}</div>
-                  <div className="text-white/45">{lead.email}</div>
-                  {lead.company ? <div className="text-white/35">{lead.company}</div> : null}
+                  <div className="font-medium text-zinc-100">{lead.name}</div>
+                  <div className="text-zinc-500">{lead.email}</div>
+                  {lead.company ? <div className="text-zinc-600">{lead.company}</div> : null}
                 </td>
-                <td className="px-3 py-4 align-top capitalize text-white/72">{lead.leadType}</td>
-                <td className="px-3 py-4 align-top uppercase text-white/72">{lead.locale}</td>
-                <td className="px-3 py-4 align-top text-white/72">
+                <td className="px-3 py-4 align-top capitalize text-zinc-300">{lead.leadType}</td>
+                <td className="px-3 py-4 align-top uppercase text-zinc-300">{lead.locale}</td>
+                <td className="px-3 py-4 align-top text-zinc-300">
                   {formatDateLabel(lead.createdAt, lead.locale)}
                 </td>
                 <td className="px-3 py-4 align-top">
                   <select
                     value={lead.status}
                     onChange={(event) => void updateStatus(lead.id, event.target.value as LeadRecord["status"])}
-                    className="field min-w-36 py-2"
+                    className="adm-field min-w-36 py-2"
                   >
                     {statuses.map((status) => (
                       <option key={status} value={status}>
@@ -82,7 +80,7 @@ export function AdminLeadsTable({ leads }: Props) {
             ))}
             {rows.length === 0 ? (
               <tr>
-                <td className="px-3 py-4 text-white/42" colSpan={5}>
+                <td className="px-3 py-4 text-zinc-500" colSpan={5}>
                   No leads yet. Once the public form is submitted, records will appear here.
                 </td>
               </tr>
